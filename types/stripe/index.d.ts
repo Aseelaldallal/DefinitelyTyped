@@ -90,6 +90,7 @@ declare class Stripe {
     balanceTransactions: Stripe.resources.BalanceTransaction;
     charges: Stripe.resources.Charges;
     checkout: Stripe.resources.Checkout;
+    issuing: Stripe.resources.Issuing;
     coupons: Stripe.resources.Coupons;
     creditNotes: Stripe.resources.CreditNotes;
     customers: Stripe.resources.Customers;
@@ -2771,6 +2772,34 @@ declare namespace Stripe {
                  * A list of images for the item
                  */
                 images?: string[];
+            }
+        }
+    }
+
+    namespace issuing {
+        namespace authorizations {
+            interface IAuthorization extends IResourceObject {
+                object: 'issuing.authorization';
+                approved: boolean;
+                authorization_method: 'chip' | 'contactless' | 'keyed_in' | 'online' | 'swipe';
+                authorized_amount: number;
+                authorized_currency: string;
+                balance_transactions: balance.IBalanceTransaction;
+                // card: // The card
+                cardholder: string;
+                created: number;
+                held_amount: number;
+                held_currency: number;
+                is_held_amount_controllable: boolean;
+                livemode: boolean;
+                // merchant_data: 
+                metadata: IMetadata;
+                pending_authorized_amount: number;
+                //request_history;
+                status: 'closed' | 'pending' | 'reversed';
+                //transactions;
+                //verification_data
+                wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay'
             }
         }
     }
@@ -10854,6 +10883,14 @@ declare namespace Stripe {
                 data: string,
                 response?: IResponseFn<checkouts.sessions.ICheckoutSession>,
             ): Promise<checkouts.sessions.ICheckoutSession>;
+        }
+
+        class Issuing extends StripeResource {
+            authorizations: Authorizations;
+        }
+
+        class Authorizations extends StripeResource {
+
         }
 
         class TaxRates extends StripeResource {
