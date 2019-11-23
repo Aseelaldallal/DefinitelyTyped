@@ -2876,9 +2876,25 @@ declare namespace Stripe {
                 status: 'closed' | 'pending' | 'reversed';
 
 
-                //transactions;
-                //verification_data
-                wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay'
+                /**
+                 * Array of transactions
+                 */
+                transactions: Array<transactions.ITransaction>;
+
+                /**
+                 * Verification Data
+                 */
+                verification_data: {
+                    address_line1_check: VerificationDataCheck;
+                    address_zip_check: VerificationDataCheck;
+                    authentication: 'exempt' | 'failure' | 'none' | 'success';
+                    cvc_check: VerificationDataCheck;
+                }
+
+                /**
+                 * What, if any, digital wallet was used for this authorization.
+                 */
+                wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay' | null;
             }
 
             interface IRequestHistory {
@@ -2952,6 +2968,8 @@ declare namespace Stripe {
                 'webhook_approved' |
                 'webhook_timeout' |
                 'webhook_declined'
+
+            type VerificationDataCheck = 'match' | 'mismatch' | 'not_provided';
         }
 
         namespace cards {
@@ -3175,7 +3193,7 @@ declare namespace Stripe {
                 cardholder: string | cardholders.ICardHolder;
                 created: number;
                 currency: string;
-                // dispute;
+                dispute: string | disputes.IDispute | null;
                 livemode: boolean;
                 merchant_amount: number;
                 merchant_currency: number;
