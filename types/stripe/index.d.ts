@@ -2881,48 +2881,6 @@ declare namespace Stripe {
                 wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay'
             }
 
-            interface IMerchantData {
-                /**
-                 * A categorization of the seller’s type of business.
-                 */
-                category: string;
-
-                /**
-                 * City where the seller is located
-                 */
-                city: string;
-
-                /**
-                 * Country where the seller is located
-                 */
-                country: string;
-
-                /**
-                 * Name of the seller
-                 */
-                name: string;
-
-                /**
-                 * Identifier assigned to the seller by the card brand
-                 */
-                network_id: string;
-
-                /**
-                 * Postal code where the seller is located
-                 */
-                postal_code: string;
-
-                /**
-                 * State where the seller is located
-                 */
-                state: string;
-
-                /**
-                 * The url an online purchase was made from
-                 */
-                url: string | null;
-            }
-
             interface IRequestHistory {
                 /**
                  * Whether this request was approved.
@@ -3207,6 +3165,50 @@ declare namespace Stripe {
             }
         }
 
+        namespace transactions {
+            interface ITransaction extends IResourceObject {
+                object: 'issuing.transaction';
+                amount: number;
+                authorization: string | authorizations.IAuthorization;
+                balance_transaction: string | balance.IBalanceTransaction | null;
+                card: string | cards.ICard;
+                cardholder: string | cardholders.ICardHolder;
+                created: number;
+                currency: string;
+                // dispute;
+                livemode: boolean;
+                merchant_amount: number;
+                merchant_currency: number;
+                merchant_data: IMerchantData;
+                metadata: IMetadata;
+                type: 'capture' | 'refund' | 'cash_withdrawal' | 'refund_reversal' | 'dispute' | 'dispute_loss';
+            }
+        }
+
+        namespace disputes {
+            interface IDispute extends IResourceObject {
+                object: 'issuing.dispute';
+                amount: number;
+                created: number;
+                currency: string;
+                disputed_transaction: string | transactions.ITransaction;
+                evidence: {
+                    fraudulent: {
+                        dispute_explanation: string;
+                        uncategorized_file: string | files.IFileUpdate | null;
+                    } | null;
+                    other: {
+                        dispute_explanation: string;
+                        uncategorized_file: string | files.IFileUpdate | null;
+                    } | null;
+                };
+                livemode: boolean;
+                metadata: IMetadata;
+                reason: 'other' | 'fraudulent';
+                status: 'lost' | 'under_review' | 'unsubmitted' | 'won';
+            }
+        }
+
         /**
          * Spending rules that give you some control over how your cards can be used
          */
@@ -3257,6 +3259,48 @@ declare namespace Stripe {
              * The time interval with which to apply this spending limit towards. 
              */
             interval: 'per_authorization' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'all_time';
+        }
+
+        interface IMerchantData {
+            /**
+             * A categorization of the seller’s type of business.
+             */
+            category: string;
+
+            /**
+             * City where the seller is located
+             */
+            city: string;
+
+            /**
+             * Country where the seller is located
+             */
+            country: string;
+
+            /**
+             * Name of the seller
+             */
+            name: string;
+
+            /**
+             * Identifier assigned to the seller by the card brand
+             */
+            network_id: string;
+
+            /**
+             * Postal code where the seller is located
+             */
+            postal_code: string;
+
+            /**
+             * State where the seller is located
+             */
+            state: string;
+
+            /**
+             * The url an online purchase was made from
+             */
+            url: string | null;
         }
  
     }
