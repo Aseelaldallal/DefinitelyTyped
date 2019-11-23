@@ -2856,6 +2856,9 @@ declare namespace Stripe {
                  */
                 object: 'issuing.cardholder';
 
+                /**
+                 * Authorization controls. Refer to https://stripe.com/docs/issuing/authorizations for more details.
+                 */
                 authorization_controls: IAuthorizationControls;
                 
                 /**
@@ -2876,9 +2879,68 @@ declare namespace Stripe {
                  */
                 created: number;
 
+                /**
+                 * The cardholder's email address
+                 */
                 email: string;
+
+                /**
+                 * Additional information about an individual cardholder
+                 */
+                individual: Pick<accounts.IIndividual, 'dob' | 'first_name' | 'last_name' | 'verification'> | null;
+
+                /**
+                 * Whether or not this cardholder is the default cardholder.
+                 */
+                is_default: boolean;
+
+                /**
+                 * Has the value true if the object exists in live mode or the value false if the object exists in test mode.
+                 */
+                livemode: boolean;
+
+                /**
+                 * Set of key-value pairs that you can attach to an object. This can be useful for storing additional information
+                 * about the object in a structured format.
+                */
+                metadata: IMetadata;
+
+                /**
+                 * The cardholder’s name. This will be printed on cards issued to them.
+                 */
+                name: string;
+
+                /**
+                 * The cardholder’s phone number.
+                 */
+                phone_number: string;
+
+                /**
+                 * Information about verification requirements for the cardholder, including what information needs to be collected.
+                 */
+                requirements: {
+                    /**
+                     * If the cardholder is disabled, this string describes why.
+                     */
+                    disabled_reason: 'listed' | 'rejected.listed' | 'under_review' | null;
+
+                    /**
+                     * If not empty, this field contains the list of fields that need to be collected in order to verify and
+                     * re-enabled the cardholder.
+                     */
+                    past_due: Array<string>;
+                }
+
+                /**
+                 * Specifies whether to permit authorizations on this cardholder’s cards.
+                 */
+                status: 'active' | 'inactive' | 'blocked';
+
+                /**
+                 * One of individual or business_entity.
+                 */
+                type: 'individual' | 'business_entity';
             }
-            
         }
 
         /**
