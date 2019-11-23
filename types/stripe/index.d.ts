@@ -2845,7 +2845,103 @@ declare namespace Stripe {
                  */
                 brand: string;
 
-                //cardholder: 
+                /**
+                 * The Cardholder object to which the card belongs.
+                 */
+                cardholder: cardholders.ICardHolder;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
+                created: number;
+
+                /**
+                 * Three-letter ISO currency code, in lowercase. Must be a supported currency.
+                 */
+                currency: string;
+
+                /**
+                 * The expiration month of the card.
+                 */
+                exp_month: number;
+
+                /**
+                 * The expiration year of the card.
+                 */
+                exp_year: number;
+
+                /**
+                 * The last 4 digits of the card number.
+                 */
+                last4: string;
+
+                /**
+                 * Has the value true if the object exists in live mode or the value false if the object exists in test mode.
+                 */
+                livemode: boolean; 
+
+                /**
+                 * Set of key-value pairs that you can attach to an object. This can be useful for storing additional information
+                 * about the object in a structured format.
+                 */
+                metadata: IMetadata;
+
+                /**
+                 * The name of the cardholder, printed on the card.
+                 */
+                name: string;
+
+                /**
+                 * Metadata about the PIN on the card.
+                 */
+                pin: { status: 'blocked' | 'active' } | null;
+
+                /**
+                 * The card this card replaces, if any.
+                 */
+                replacement_for: string | ICard | null;
+
+                /**
+                 * Why the card that this card replaces (if any) needed to be replaced.
+                 */
+                replacement_reason: 'damage' | 'expiration' | 'loss' | 'theft' | null;
+
+                /**
+                 * Where and how the card will be shipped.
+                 */
+                shipping: ICardShippingInformation | null;
+
+                /**
+                 * Card Status
+                 */
+                status: 'active' | 'inactive' | 'canceled' | 'lost' | 'stolen';
+
+                /**
+                 * Card Type
+                 */
+                type: 'virtual' | 'physical';
+            }
+
+            interface ICardShippingInformation extends IShippingInformation {
+                /**
+                 * A unix timestamp representing a best estimate of when the card will be delivered.
+                 */
+                eta: number;
+
+                /**
+                 * The delivery status of the card.
+                 */
+                status: 'pending' | 'shipped' | 'delivered' | 'returned' | 'failure' | 'canceled';
+
+                /**
+                 * A link to the shipping carrier’s site where you can view detailed information about a card shipment.
+                 */
+                tracking_url: string;
+
+                /**
+                 * One of bulk or individual. Bulk shipments will be grouped and mailed together, while individual ones will not.
+                 */
+                type: 'bulk' | 'individual';
             }
         }
 
