@@ -2810,22 +2810,190 @@ declare namespace Stripe {
                  */
                 balance_transactions: Array<balance.IBalanceTransaction>;
 
-                // card: // The card
-                cardholder: string;
+                /**
+                 * The Card
+                 */
+                card: cards.ICard;
+
+                /**
+                 * The cardholder to whom this authorization belongs.
+                 */
+                cardholder: string | cardholders.ICardHolder | null;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
                 created: number;
+
+                /**
+                 * The amount the authorization is expected to be in held_currency. When Stripe holds funds
+                 * from you, this is the amount reserved for the authorization. This will be 0 when the object
+                 * is created, and increase after it has been approved. For multi-currency transactions, held_amount
+                 * can be used to determine the expected exchange rate.
+                 */
                 held_amount: number;
+
+                /**
+                 * The currency of the held amount. This will always be the card currency.
+                 */
                 held_currency: number;
+
+                /**
+                 * Whether or not held amount is controllable
+                 */
                 is_held_amount_controllable: boolean;
+
+                /**
+                 * Has the value true if the object exists in live mode or the value false if the object exists in test mode.
+                 */
                 livemode: boolean;
-                // merchant_data: 
+
+                /**
+                 * Merchant data
+                 */
+                merchant_data: IMerchantData;
+
+                /**
+                 * Set of key-value pairs that you can attach to an object. This can be useful for storing additional
+                 * information about the object in a structured format.
+                 */
                 metadata: IMetadata;
+
+                /**
+                 * The amount the user is requesting to be authorized. This field will only be non-zero during an
+                 * issuing.authorization.request webhook.
+                 */
                 pending_authorized_amount: number;
-                //request_history;
+
+                /**
+                 * Request History
+                 */
+                request_history: Array<IRequestHistory>;
+
+                /**
+                 * Status
+                 */
                 status: 'closed' | 'pending' | 'reversed';
+
+
                 //transactions;
                 //verification_data
                 wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay'
             }
+
+            interface IMerchantData {
+                /**
+                 * A categorization of the seller’s type of business.
+                 */
+                category: string;
+
+                /**
+                 * City where the seller is located
+                 */
+                city: string;
+
+                /**
+                 * Country where the seller is located
+                 */
+                country: string;
+
+                /**
+                 * Name of the seller
+                 */
+                name: string;
+
+                /**
+                 * Identifier assigned to the seller by the card brand
+                 */
+                network_id: string;
+
+                /**
+                 * Postal code where the seller is located
+                 */
+                postal_code: string;
+
+                /**
+                 * State where the seller is located
+                 */
+                state: string;
+
+                /**
+                 * The url an online purchase was made from
+                 */
+                url: string | null;
+            }
+
+            interface IRequestHistory {
+                /**
+                 * Whether this request was approved.
+                 */
+                approved: boolean;
+
+                /**
+                 * The amount that was authorized at the time of this request
+                 */
+                authorized_amount: number;
+
+                /**
+                 * The currency that was presented to the cardholder for the authorization. Three-letter
+                 * ISO currency code, in lowercase. Must be a supported currency.
+                 */
+                authorized_currency: string;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
+                created: number;
+
+                /**
+                 * The amount Stripe held from your account to fund the authorization, if the request was approved
+                 */
+                held_amount: number;
+
+                /**
+                 * The currency of the held amount
+                 */
+                held_currency: number;
+
+                /**
+                 * The reason for the approval or decline.
+                 */
+                reason: ApproveDeclineReason;
+
+                /**
+                 * When an authorization is declined due to authorization_controls, this array contains details about
+                 * the authorization controls that were violated. Otherwise, it is empty.
+                 */
+                violated_authorization_controls: Array<IViolatedAuthorizationControls>;
+            }
+
+            interface IViolatedAuthorizationControls {
+                /**
+                 * Entity which the authorization control acts on.
+                 */
+                entity: 'account' | 'card' | 'cardholder';
+
+                /**
+                 * Name of the authorization control.
+                 */
+                name: 'allowed_categories' | 'blocked_categories' | 'max_amount' | 'max_approvals' | 'spending_limits';
+            }
+
+            type ApproveDeclineReason = 
+                'account_compliance_disabled' |
+                'account_inactive' |
+                'authentication_failed' |
+                'authorization_controls' | 
+                'card_active' |
+                'card_inactive' |
+                'cardholder_inactive' |
+                'insufficient_funds' |
+                'cardholder_verification_required' |
+                'not_allowed' |
+                'suspected_fraud' |
+                'webhook_approved' |
+                'webhook_timeout' |
+                'webhook_declined'
         }
 
         namespace cards {
@@ -2899,7 +3067,7 @@ declare namespace Stripe {
                 /**
                  * The card this card replaces, if any.
                  */
-                replacement_for: string | ICard | null;
+                replacement_for: string | cards.ICard | null;
 
                 /**
                  * Why the card that this card replaces (if any) needed to be replaced.
