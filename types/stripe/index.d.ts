@@ -2779,12 +2779,37 @@ declare namespace Stripe {
     namespace issuing {
         namespace authorizations {
             interface IAuthorization extends IResourceObject {
+                /**
+                 * Value is "issuing.authorization"
+                 */
                 object: 'issuing.authorization';
+
+                /**
+                 * Whether the authorization has been approved.
+                 */
                 approved: boolean;
+
+                /**
+                 * How the card details were provided.
+                 */
                 authorization_method: 'chip' | 'contactless' | 'keyed_in' | 'online' | 'swipe';
+
+                /**
+                 * The amount that has been authorized. This will be 0 when the object is created, and increase after it has been approved.
+                 */
                 authorized_amount: number;
+
+                /**
+                 * The currency that was presented to the cardholder for the authorization. Three-letter ISO currency code, in lowercase.
+                 * Must be a supported currency.
+                 */
                 authorized_currency: string;
-                balance_transactions: balance.IBalanceTransaction;
+
+                /**
+                 * Array of BalanceTransaction Objects
+                 */
+                balance_transactions: Array<balance.IBalanceTransaction>;
+
                 // card: // The card
                 cardholder: string;
                 created: number;
@@ -2802,6 +2827,112 @@ declare namespace Stripe {
                 wallet_provider: 'apple_pay' | 'google_pay' | 'samsung_pay'
             }
         }
+
+        namespace cards {
+            interface ICard extends IResourceObject {
+                /**
+                 * String representing the object’s type. Value is 'issuing.card'
+                 */
+                object: 'issuing.card';
+
+                /** 
+                 * Spending rules that give you some control over how your cards can be used.
+                 */
+                authorization_controls: IAuthorizationControls;
+
+                /**
+                 * The brand of the card.
+                 */
+                brand: string;
+
+                //cardholder: 
+            }
+        }
+
+        namespace cardholders {
+            interface ICardHolder extends IResourceObject {
+                /**
+                 * Value is "issuing.cardholder"
+                 */
+                object: 'issuing.cardholder';
+
+                authorization_controls: IAuthorizationControls;
+                
+                /**
+                 * The cardholder's billing address
+                 */
+                billing: {
+                    address: IAddress;
+                    name: string;
+                }
+
+                /**
+                 * Additional information about a business_entity cardholder.
+                 */
+                company: { tax_id_provided: boolean } | null;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
+                created: number;
+
+                email: string;
+            }
+            
+        }
+
+        /**
+         * Spending rules that give you some control over how your cards can be used
+         */
+        interface IAuthorizationControls {
+            /**
+             * Array of strings containing categories of authorizations permitted on this card.
+             */
+            allowed_categories: Array<string> | null;
+
+            /**
+             * Array of strings containing categories of authorizations to always decline on this card.
+             */
+            blocked_categories: Array<string> | null;
+
+            /**
+             * The currency of the card.
+             */
+            currency: string;
+
+            /** 
+             * Maximum count of approved authorizations on this card. Counts all authorizations retroactively.
+             */
+            max_approvals: number;
+
+            /**
+             * Limit the spending with rules based on time intervals and categories. Leave this blank to limit all charges.
+             */
+            spending_limits: Array<ISpendingLimits>;
+
+            /**
+             * Currency for the amounts within spending_limits. Locked to the currency of the card.
+             */
+            spending_limits_currency: string | null;
+        }
+
+        interface ISpendingLimits {
+            /**
+             * Maximum amount allowed to spend per time interval.
+             */
+            amount: number;
+
+            /**
+             * Array of strings containing categories on which to apply the spending limit.
+             */
+            categories: Array<string>;
+
+            /**
+             * The time interval with which to apply this spending limit towards. 
+             */
+            interval: 'per_authorization' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'all_time';
+        }
+ 
     }
 
     namespace creditNotes {
@@ -10887,9 +11018,14 @@ declare namespace Stripe {
 
         class Issuing extends StripeResource {
             authorizations: Authorizations;
+            cards: Cards;
         }
 
         class Authorizations extends StripeResource {
+
+        }
+
+        class Cards extends StripeResource {
 
         }
 
