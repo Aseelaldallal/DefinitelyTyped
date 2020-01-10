@@ -3262,24 +3262,73 @@ declare namespace Stripe {
 
         namespace disputes {
             interface IDispute extends IResourceObject {
+
+                /**
+                 * String representing the object’s type. Value is 'issuing.dispute'
+                 */
                 object: 'issuing.dispute';
+
+                /**
+                 * Disputed amount. Usually the amount of the disputed_transaction, but can differ (usually
+                 * because of currency fluctuation or because only part of the order is disputed).
+                 */
                 amount: number;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
                 created: number;
+
+                /**
+                 * The currency the disputed_transaction was made in.
+                 */
                 currency: string;
+
+                /**
+                 * The transaction being disputed.
+                 */
                 disputed_transaction: string | transactions.ITransaction;
+
+                /**
+                 * Evidence related to the dispute. This hash will contain exactly one non-null value, containing
+                 * an evidence object that matches its reason
+                 */
                 evidence: {
+                    /**
+                     * Evidence to support a fraudulent dispute. This will only be present if your dispute’s reason is fraudulent
+                     */
                     fraudulent: {
                         dispute_explanation: string;
                         uncategorized_file: string | files.IFileUpdate | null;
                     } | null;
+                    /**
+                     * Evidence to support an uncategorized dispute. This will only be present if your dispute’s reason is other
+                     */
                     other: {
                         dispute_explanation: string;
                         uncategorized_file: string | files.IFileUpdate | null;
                     } | null;
                 };
+
+                /**
+                 * Has the value true if the object exists in live mode or the value false if the object exists in test mode.
+                 */
                 livemode: boolean;
+
+                /**
+                 * Set of key-value pairs that you can attach to an object. This can be useful for storing additional information
+                 * about the object in a structured format.
+                 */
                 metadata: IMetadata;
+
+                /**
+                 * Reason for this dispute.
+                 */
                 reason: 'other' | 'fraudulent';
+
+                /**
+                 * Current status of dispute. 
+                 */
                 status: 'lost' | 'under_review' | 'unsubmitted' | 'won';
             }
         }
@@ -11459,19 +11508,6 @@ declare namespace Stripe {
                 data: string,
                 response?: IResponseFn<checkouts.sessions.ICheckoutSession>,
             ): Promise<checkouts.sessions.ICheckoutSession>;
-        }
-
-        class Issuing extends StripeResource {
-            authorizations: Authorizations;
-            cards: Cards;
-        }
-
-        class Authorizations extends StripeResource {
-
-        }
-
-        class Cards extends StripeResource {
-
         }
 
         class TaxRates extends StripeResource {
