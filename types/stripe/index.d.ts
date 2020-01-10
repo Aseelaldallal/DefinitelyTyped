@@ -3185,20 +3185,77 @@ declare namespace Stripe {
 
         namespace transactions {
             interface ITransaction extends IResourceObject {
+
+                /**
+                 * Value is "issuing.transaction"
+                 */
                 object: 'issuing.transaction';
+
+                /** 
+                 * The amount of this transaction in your currency. This is the amount that your balance will be updated by.
+                */
                 amount: number;
+
+                /**
+                 * The Authorization object that led to this transaction. 
+                 */
                 authorization: string | authorizations.IAuthorization;
+
                 balance_transaction: string | balance.IBalanceTransaction | null;
+                
+                /**
+                 * The card used to make this transaction.
+                 */
                 card: string | cards.ICard;
-                cardholder: string | cardholders.ICardHolder;
+
+                /**
+                 * The cardholder to whom this transaction belongs
+                 */
+                cardholder: string | cardholders.ICardHolder | null;
+
+                /**
+                 * Time at which the object was created. Measured in seconds since the Unix epoch.
+                 */
                 created: number;
+
+                /**
+                 * Three-letter ISO currency code, in lowercase. Must be a supported currency. 
+                 * See https://stripe.com/docs/currencies
+                 */
                 currency: string;
+
                 dispute: string | disputes.IDispute | null;
+
+                /**
+                 * Has the value true if the object exists in live mode or the value false if the object exists in test mode.
+                 */
                 livemode: boolean;
+
+                /**
+                 * The amount that the merchant will receive, denominated in merchant_currency. It will be different
+                 * from amount if the merchant is taking payment in a different currency.
+                 */
                 merchant_amount: number;
+
+                /**
+                 * The currency with which the merchant is taking payment.
+                 */
                 merchant_currency: number;
+
+                /**
+                 * More information about the user involved in the transaction. 
+                 */
                 merchant_data: IMerchantData;
+
+                /**
+                 * Set of key-value pairs that you can attach to an object. This can be useful for storing additional
+                 * information about the object in a structured format.
+                 */
                 metadata: IMetadata;
+
+                /**
+                 * The nature of the transaction.
+                 */
                 type: 'capture' | 'refund' | 'cash_withdrawal' | 'refund_reversal' | 'dispute' | 'dispute_loss';
             }
         }
