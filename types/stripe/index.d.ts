@@ -11510,6 +11510,43 @@ declare namespace Stripe {
             ): Promise<checkouts.sessions.ICheckoutSession>;
         }
 
+        class Issuing extends StripeResource {
+            authorizations: Authorizations;
+            cardHolders: CardHolders;
+            cards: Cards;
+            disputes: IssuingDisputes;
+            transactions: Transactions;
+        }
+
+        class Authorizations extends StripeResource {
+
+            /**
+             * Retrieves an Issuing Authorization object.
+             */
+            retrieve(id: string, response?: IResponseFn<issuing.authorizations.IAuthorization>): Promise<issuing.authorizations.IAuthorization>;
+            retrieve(
+                id: string,
+                options: HeaderOptions,
+                response?: IResponseFn<issuing.authorizations.IAuthorization>,
+            ): Promise<issuing.authorizations.IAuthorization>;
+        }
+
+        class CardHolders extends StripeResource {
+
+        }
+
+        class Cards extends StripeResource {
+
+        }
+
+        class IssuingDisputes extends StripeResource {
+            
+        }
+
+        class Transactions extends StripeResource {
+
+        }
+
         class TaxRates extends StripeResource {
             /**
              * Creates a new tax rate.

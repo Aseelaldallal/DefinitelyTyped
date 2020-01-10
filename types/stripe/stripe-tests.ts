@@ -1423,6 +1423,19 @@ stripe.reviews.list({ limit: 3 }).then(reviews => {
 
 //#endregion
 
+//#region Issuing Authorization tests
+// ##################################################################################
+
+stripe.issuing.authorizations.retrieve('iauth_1DPc772eZvKYlo2C6avLyZ25', (err, authorization) => {
+    authorization; // $ExpectType IAuthorization
+});
+
+stripe.issuing.authorizations.retrieve('prv_1FhJ93BZBR5SQORgPByBqMbC').then(authorization => {
+    authorization; // $ExpectType IAuthorization
+});
+
+//#endregion
+
 //#region External Accounts tests
 // ##################################################################################
 
